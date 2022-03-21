@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans>
+    <bean id="userBasicDAO" class="com.axx.qqzone.dao.impl.UserBasicDAOImpl"></bean>
+    <bean id="topicDAO" class="com.axx.qqzone.dao.impl.TopicDAOImpl"></bean>
+</beans>
