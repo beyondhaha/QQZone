@@ -1,0 +1,13 @@
+package com.axx.qqzone.service;
+
+import com.axx.qqzone.pojo.UserBasic;
+
+import java.util.List;
+
+public interface UserBasicService {
+    UserBasic login(String loginId, String pwd);
+
+    List<UserBasic> getFriendList(UserBasic userBasic);
+
+    UserBasic getUserBasicById(Integer id);
+}

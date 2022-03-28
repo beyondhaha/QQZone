@@ -2,9 +2,7 @@ package com.axx.myssm.basedao;
 
 import com.axx.myssm.utils.ConnUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,14 +80,37 @@ public abstract class BaseDAO<T> {
     }
 
     //通过反射技术给obj对象的property属性赋propertyValue值
-    private void setValue(Object obj, String property, Object propertyValue) throws IllegalAccessException, NoSuchFieldException {
+    private void setValue(Object obj, String property, Object propertyValue) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         Class clazz = obj.getClass();
         //获取property这个字符串对应的属性名 ， 比如 "fid"  去找 obj对象中的 fid 属性
         Field field = clazz.getDeclaredField(property);
         if (field != null) {
+
+            //获取当前字段的类型名称
+            String typeName = field.getType().getTypeName();
+
+            //判断是否为自定义类型，是则调用这个自定义类型的带一个参数的构造方法，创建出这个自定义类型的示例对象
+            if (isMyType(typeName)) {
+                Class typeNameClass = Class.forName(typeName);
+                Constructor constructor = typeNameClass.getDeclaredConstructor(java.lang.Integer.class);
+                propertyValue = constructor.newInstance(propertyValue);
+            }
+
             field.setAccessible(true);
             field.set(obj, propertyValue);
         }
+    }
+
+    //判断是否是自定义类型
+    private boolean isNotMyType(String typeName) {
+        return "java.lang.Integer".equals(typeName)
+                || "java.lang.String".equals(typeName)
+                || "java.util.Date".equals(typeName)
+                || "java.sql.Date".equals(typeName);
+    }
+
+    private boolean isMyType(String typeName) {
+        return !isNotMyType(typeName);
     }
 
     //执行复杂查询，返回例如统计结果
@@ -141,7 +162,7 @@ public abstract class BaseDAO<T> {
                 T entity = (T) entityClass.newInstance();
 
                 for (int i = 0; i < columnCount; i++) {
-                    String columnName = rsmd.getColumnName(i + 1);            //fid   fname   price
+                    String columnName = rsmd.getColumnLabel(i + 1);            //fid   fname   price
                     Object columnValue = rs.getObject(i + 1);     //33    苹果      5
                     setValue(entity, columnName, columnValue);
                 }
@@ -175,7 +196,7 @@ public abstract class BaseDAO<T> {
                 T entity = (T) entityClass.newInstance();
 
                 for (int i = 0; i < columnCount; i++) {
-                    String columnName = rsmd.getColumnName(i + 1);            //fid   fname   price
+                    String columnName = rsmd.getColumnLabel(i + 1);            //fid   fname   price
                     Object columnValue = rs.getObject(i + 1);     //33    苹果      5
                     setValue(entity, columnName, columnValue);
                 }

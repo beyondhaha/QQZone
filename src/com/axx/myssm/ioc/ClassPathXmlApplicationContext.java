@@ -62,7 +62,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
                             String propertyRef = propertyElement.getAttribute("ref");
                             //1、找到propertyRef对应的示例
                             Object refObj = beanMap.get(propertyRef);
-                            //1、将refObj设置到当前bean对应的实例的property属性上去
+                            //2、将refObj设置到当前bean对应的实例的property属性上去
                             Object beanObj = beanMap.get(beanId);
                             Class beanClazz = beanObj.getClass();
                             Field propertyField = beanClazz.getDeclaredField(propertyName);
