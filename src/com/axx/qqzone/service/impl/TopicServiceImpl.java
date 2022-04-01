@@ -30,6 +30,17 @@ public class TopicServiceImpl implements TopicService {
         return topic;
     }
 
+    //删除topic
+    @Override
+    public void delTopic(Integer id) {
+        Topic topic = topicDAO.getTopic(id);
+        if (topic != null) {
+            replyService.delReplyList(topic);
+
+            topicDAO.delTopic(topic);
+        }
+    }
+
     @Override
     public Topic getTopicById(Integer id) {
         Topic topic = getTopic(id);

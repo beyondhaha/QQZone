@@ -6,4 +6,6 @@ public interface HostReplyDAO {
     //通过回复的ID获取特定主人回复
     HostReply getHostReplyByReplyId(Integer replyId);
 
+    //删除特定主人回复
+    void delHostReply(Integer id);
 }

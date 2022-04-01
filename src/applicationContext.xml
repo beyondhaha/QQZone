@@ -38,4 +38,8 @@
         <property name="topicService" ref="topicService"></property>
     </bean>
 
+    <bean id="reply" class="com.axx.qqzone.controller.ReplyController">
+        <property name="replyService" ref="replyService"></property>
+    </bean>
+
 </beans>

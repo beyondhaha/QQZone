@@ -9,6 +9,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib_thymeleaf" />
           <element id="library" level="project" name="mysql-connector-java-5.1.45-bin" />
+          <element id="library" level="project" name="libs" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="QQZone/web/Web" />
